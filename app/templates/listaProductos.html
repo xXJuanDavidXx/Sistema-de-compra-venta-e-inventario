@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <!-- Contenido principal (tabla de productos) -->
+  <div class="flex-1 px-6 py-6">
+    <h1 class="text-center text-2xl font-bold mb-4">Productos</h1>
+
+    <div class="flex justify-center mb-4">
+      <a href="{% url 'agregar' %}" class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
+        Agregar
+      </a>
+    </div>
+
+    <div class="flex justify-center">
+      <div class="overflow-x-auto w-full max-w-4xl">
+        <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+          <thead class="text-left">
+            <tr>
+              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nombre</th>
+              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Precio</th>
+              <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Cantidad</th>
+              <th class="px-4 py-2"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            {% for producto in productos %}
+            <tr>
+              <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{{ producto.nombre }}</td>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.precio_final }}</td>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.stock }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-700">No hay productos disponibles.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

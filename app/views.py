@@ -67,12 +67,3 @@ class ListarProductos(generic.ListView):
 
 
 
-    
-
-
-
-
-
-
-
-

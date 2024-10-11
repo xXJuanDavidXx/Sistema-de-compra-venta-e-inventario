@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <!-- Contenido principal (tabla de productos) -->
-  <div class="flex-1 px-6 py-6">
-    <h1 class="text-center text-2xl font-bold mb-4">Productos</h1>
+{% load crispy_forms_tags %}
+<div>
 
     <div class="flex justify-center mb-4">
       <a href="{% url 'agregar' %}" class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
         Agregar
       </a>
     </div>
+
+    {% include 'compra.html' %}
+
+</div>
+
+
+  <!-- Contenido principal (tabla de productos) -->
+  <div class="flex-1 px-6 py-6">
+    <h1 class="text-center text-2xl font-bold mb-4">Productos</h1>
 
     <div class="flex justify-center">
       <div class="overflow-x-auto w-full max-w-4xl">

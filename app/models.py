@@ -19,7 +19,7 @@ class Producto(models.Model):
 
 
     def __str__(self):
-        return f"{self.nombre} -> {self.precio_final} -> {self.stock}"
+        return f"{self.nombre} - {self.precio_final} - {self.stock}"
 
 
 

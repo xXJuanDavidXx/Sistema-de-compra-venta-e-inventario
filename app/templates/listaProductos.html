@@ -36,6 +36,16 @@
               <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{{ producto.nombre }}</td>
               <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.precio_final }}</td>
               <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.stock }}</td>
+            <!--Agregar el boton de comprar-->
+
+            <td>
+                <form action="{% url 'detalle_compra' producto.id %}" method="POST">
+                  {% csrf_token %}
+                  <input type="number" name="cantidad" value="1" min="1"> <!--Cantidad del producto, por defecto 1-->
+                  <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Agregar</button>
+                </form>
+              </td>
+
             </tr>
             {% empty %}
             <tr>

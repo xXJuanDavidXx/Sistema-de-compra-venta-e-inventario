@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import compra
+from .views import agregar_a_compra
 
 urlpatterns = [
-    path('', compra, name="Compra")
+    path('<int:producto_id>/', agregar_a_compra, name="detalle_compra"),
         ]
 

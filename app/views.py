@@ -3,7 +3,7 @@ from django.views import generic
 from .forms import Agregar
 from django.urls import reverse_lazy
 from .models import Producto
-
+from compra.models import Compra, DetalleProducto
 
 # Create your views here.
 
@@ -62,6 +62,12 @@ class ListarProductos(generic.ListView):
     model = Producto
     context_object_name = 'productos'
     template_name = 'listaProductos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['compra'] = Compra.objects.get(usuario=self.request.user, estado=True)
+        context['detalles'] = DetalleProducto.objects.filter(compra=context['compra'])
+        return context
 
 
 

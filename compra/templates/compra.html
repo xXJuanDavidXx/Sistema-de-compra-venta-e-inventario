@@ -1,8 +1,39 @@
-<form method="post">
-    {% csrf_token %}
-        <div>
-            {{ form.as_p }}
-        </div>
-    <button type="submit">Agregar productos</button>
-</form>
 
+<div class="container">
+    <h1 class="text-2xl font-bold mb-4">Detalles de la Compra</h1>
+
+    <h2 class="text-lg font-semibold">Compra #{{ compra.id }}</h2>
+    <p><strong>Fecha de Compra:</strong> {{ compra.order_date }}</p>
+    <p><strong>Total:</strong> {{ compra.total }}</p>
+
+    <h3 class="text-lg font-semibold mt-4">Detalles de Productos</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Producto</th>
+                <th class="px-4 py-2">Cantidad</th>
+                <th class="px-4 py-2">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td class="px-4 py-2">{{ detalle.producto.nombre }}</td>
+                <td class="px-4 py-2">{{ detalle.cantidad }}</td>
+                <td class="px-4 py-2">{{ detalle.subtotal }}</td>
+                <td class="px-4 py-2">
+                    <form action="{% url 'eliminar_del_carrito' detalle.producto.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Eliminar</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="px-4 py-2 text-center">No hay productos en esta compra.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

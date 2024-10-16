@@ -8,14 +8,21 @@ class Compra(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE) #La relación ForeignKey indica que cada compra está asociada a un solo usuario, pero un usuario puede tener varias compras.
     order_date = models.DateTimeField(auto_now_add=True) #Se crea con la fecha actual
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-  
-    #Le estamos agregando un formato a la forma en la que se va representar en el admin.
+    estado = models.BooleanField(default=True) #True si la compra está activa, False si está cerrada.
+
+
     def __str__(self):         
         return f"Compra {self.id} - {self.order_date}" 
 
     def actualizar_total(self): #Este método suma el total de los detalles de la compra (los productos y sus cantidades) y actualiza el campo total.
         self.total = sum(detalle.subtotal for detalle in self.detalleproducto_set.all())#self.detallesdecompra_set.all() accede a todos los objetos relacionados con la compra a través de la relación ForeignKey de DetallesDeCompra. Luego, calcula el subtotal para cada detalle y lo suma.
         self.save()
+
+    def cerrar_compra(self):
+        self.estado = False
+        self.save()
+
+
 
 #En esta clase se guardan todos los items de la orden.
 class DetalleProducto(models.Model):

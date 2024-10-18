@@ -12,7 +12,8 @@ class Producto(models.Model):
     def save(self, *args, **kwargs): #Aqui vamos a calcular el precio original por el porcentaje
         #Calcular el precio final
         if self.precio_base and self.porcentaje_ganancia:
-            self.precio_final = self.precio_base + (self.precio_base * (self.porcentaje_ganancia/100))
+            self.precio_sin_redondear = self.precio_base + (self.precio_base * (self.porcentaje_ganancia/100))
+            self.precio_final = (self.precio_sin_redondear + 49) // 50 * 50 #Redondeo al 50 mas cercano.
         else:
             self.precio_final = 0
         super().save(*args, **kwargs)

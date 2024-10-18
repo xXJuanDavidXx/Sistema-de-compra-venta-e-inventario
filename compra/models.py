@@ -18,21 +18,24 @@ class Compra(models.Model):
         self.total = sum(detalle.subtotal for detalle in self.detalleproducto_set.all())#self.detallesdecompra_set.all() accede a todos los objetos relacionados con la compra a través de la relación ForeignKey de DetallesDeCompra. Luego, calcula el subtotal para cada detalle y lo suma.
         self.save()
 
-    def cerrar_compra(self):
+    def cerrar_compra(self): #este metodo finaliza la compra actual.
         self.estado = False
         self.save()
 
 
 
-#En esta clase se guardan todos los items de la orden.
+
 class DetalleProducto(models.Model):
-    compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
-    cantidad = models.PositiveIntegerField()
+    """
+    En esta clase se guardan todos los items de la orden.
+    """
+    compra = models.ForeignKey(Compra, on_delete=models.CASCADE) #Relacion con la compra
+    producto = models.ForeignKey(Producto, on_delete=models.PROTECT) #Relacion con el producto
+    cantidad = models.PositiveIntegerField() #Cantidad del producto
     
     def __str__(self):
         return f"Detalle de compra {self.id} - {self.compra}"
     
     @property
-    def subtotal(self):
+    def subtotal(self): #Este metodo calcula el subtotal de cada producto por su cantidad
         return self.cantidad * self.producto.precio_final

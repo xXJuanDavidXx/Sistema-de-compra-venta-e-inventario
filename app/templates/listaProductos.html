@@ -2,6 +2,18 @@
 
 {% block content %}
 {% load crispy_forms_tags %}
+
+
+<!--Mensaje de alerta en caso de que se haya agregado un producto al carrito o no se tengan existencias-->
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
 <div>
 
     <div class="flex justify-center mb-4">
@@ -9,15 +21,28 @@
         Agregar
       </a>
     </div>
+</div>
 
+
+<!--Incluir el archivo de compra.html que es el carrito de compras arriba de la tabla de productos-->
     {% include 'compra.html' %}
 
-</div>
 
 
   <!-- Contenido principal (tabla de productos) -->
   <div class="flex-1 px-6 py-6">
     <h1 class="text-center text-2xl font-bold mb-4">Productos</h1>
+
+      <!-- Barra de busqueda. -->
+      <center>
+        <div class="search-bar mb-5">
+          <form action="{% url 'buscar_producto' %}" method="get">
+            <input type="text" name="q" class="px-4 py-2 text-gray-700 border rounded" placeholder="Buscar">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Buscar</button>
+          </form>
+        </div>
+      </center>
+  
 
     <div class="flex justify-center">
       <div class="overflow-x-auto w-full max-w-4xl">
@@ -39,13 +64,24 @@
             <!--Agregar el boton de comprar-->
 
             <td>
-                <form action="{% url 'detalle_compra' producto.id %}" method="POST">
+                <form action="{% url 'detalle_compra' producto.id %}" method="POST" class="flex items-center">
                   {% csrf_token %}
-                  <input type="number" name="cantidad" value="1" min="1"> <!--Cantidad del producto, por defecto 1-->
-                  <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Agregar</button>
+                  <input type="number" 
+                         name="cantidad" 
+                         value="1" 
+                         min="1" 
+                         max="{{ producto.stock }}" 
+                         class="w-16 px-2 py-1 border rounded mr-2 text-gray-900"
+                         required
+                         oninput="this.value = Math.min(this.value, {{ producto.stock }})"
+                         onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                  <button type="submit" 
+                          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" 
+                          {% if producto.stock < 1 %}disabled{% endif %}>
+                      {% if producto.stock < 1 %}Agotado{% else %}Agregar{% endif %}
+                  </button> <!--Implementar cambiar de color el boton si hay existencias o no-->
                 </form>
               </td>
-
             </tr>
             {% empty %}
             <tr>

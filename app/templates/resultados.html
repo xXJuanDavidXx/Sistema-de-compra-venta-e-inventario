@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--Incluir el archivo de compra.html que es el carrito de compras arriba de la tabla de productos-->
+{% include 'compra.html' %}
+
+
+<div class="flex justify-center">
+    <div class="overflow-x-auto w-full max-w-4xl">
+  
+      <!-- Barra de busqueda. -->
+      <center>
+        <div class="search-bar mb-5">
+          <form action="{% url 'buscar_producto' %}" method="get">
+            <input type="text" name="q" class="px-4 py-2 text-gray-700 border rounded" placeholder="Buscar">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Buscar</button>
+          </form>
+        </div>
+      </center>
+  
+      <!-- Search Results Title (if applicable) -->
+      {% if query %}
+      <h1 class="text-xl font-bold text-center mb-4">Resultados de la búsqueda para: "{{ query }}"</h1>
+      {% endif %}
+  
+      <!-- Products Table -->
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+        <thead class="text-left">
+          <tr>
+            <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nombre</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Precio</th>
+            <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Cantidad</th>
+            <th class="px-4 py-2"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          {% for producto in productos %}
+          <tr>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">{{ producto.nombre }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.precio_final }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ producto.stock }}</td>
+  
+            <!-- Purchase Button -->
+            <td>
+              <form action="{% url 'detalle_compra' producto.id %}" method="POST" class="flex items-center">
+                {% csrf_token %}
+                <input type="number" 
+                       name="cantidad" 
+                       value="1" 
+                       min="1" 
+                       max="{{ producto.stock }}" 
+                       class="w-16 px-2 py-1 border rounded mr-2 text-gray-900"
+                       required
+                       oninput="this.value = Math.min(this.value, {{ producto.stock }})"
+                       onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                <button type="submit" 
+                        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" 
+                        {% if producto.stock < 1 %}disabled{% endif %}>
+                    {% if producto.stock < 1 %}Agotado{% else %}Agregar{% endif %}
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-700">No hay productos disponibles.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+{% endblock %}

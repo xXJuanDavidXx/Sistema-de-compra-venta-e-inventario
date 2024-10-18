@@ -1,6 +1,5 @@
-
 <!--Carrito de compras-->
-<div class="container">
+<div class="container mx-auto my-8">
     <h1 class="text-2xl font-bold mb-4">Detalles de la Compra</h1>
     <!--Mostrar el id de la compra, la fecha de compra, el total de la compra-->
     <h2 class="text-lg font-semibold">Compra #{{ compra.id }}</h2>
@@ -15,6 +14,7 @@
                 <th class="px-4 py-2">Producto</th>
                 <th class="px-4 py-2">Cantidad</th>
                 <th class="px-4 py-2">Subtotal</th>
+                <th class="px-4 py-2">Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -33,12 +33,15 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="3" class="px-4 py-2 text-center">No hay productos en esta compra.</td>
+                <td colspan="4" class="px-4 py-2 text-center">*No hay productos en esta compra.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-<hr>
-<!--Boton para cerrar la compra-->
-<a href="{% url 'venta' %}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Cerrar Compra</a>
+
+<div class="container mx-auto my-8">
+    <div class="text-center">
+        <a href="{% url 'venta' %}" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Cerrar Compra</a>
+    </div>
+</div>

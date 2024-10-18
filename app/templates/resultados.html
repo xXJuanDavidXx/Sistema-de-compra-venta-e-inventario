@@ -1,6 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
+  <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+    Resultados de búsqueda para: "{{ query }}"
+  </span>
+</h1>
+
+<style>
+  @keyframes rainbow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  .animate-rainbow {
+    animation: rainbow 5s ease infinite;
+  }
+  .animate-gradient {
+    animation: rainbow 3s ease infinite;
+    background-size: 200% 200%;
+  }
+</style>
+
+
 <!--Incluir el archivo de compra.html que es el carrito de compras arriba de la tabla de productos-->
 {% include 'compra.html' %}
 
@@ -18,10 +44,6 @@
         </div>
       </center>
   
-      <!-- Search Results Title (if applicable) -->
-      {% if query %}
-      <h1 class="text-xl font-bold text-center mb-4">Resultados de la búsqueda para: "{{ query }}"</h1>
-      {% endif %}
   
       <!-- Products Table -->
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
@@ -49,12 +71,13 @@
                        value="1" 
                        min="1" 
                        max="{{ producto.stock }}" 
+                       step="1"
                        class="w-16 px-2 py-1 border rounded mr-2 text-gray-900"
                        required
-                       oninput="this.value = Math.min(this.value, {{ producto.stock }})"
+                       oninput="this.value = Math.min(parseInt(this.value) || 1, {{ producto.stock }})"
                        onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                 <button type="submit" 
-                        class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" 
+                        class="{% if producto.stock < 1 %}bg-gradient-to-r from-red-500 to-red-700{% else %}bg-gradient-to-r from-purple-400 via-pink-500 to-red-500{% endif %} text-white px-4 py-2 rounded hover:opacity-90 animate-gradient" 
                         {% if producto.stock < 1 %}disabled{% endif %}>
                     {% if producto.stock < 1 %}Agotado{% else %}Agregar{% endif %}
                 </button>
@@ -63,7 +86,7 @@
           </tr>
           {% empty %}
           <tr>
-            <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-700">No hay productos disponibles.</td>
+            <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-700">No existe {{ query }}.</td>
           </tr>
           {% endfor %}
         </tbody>

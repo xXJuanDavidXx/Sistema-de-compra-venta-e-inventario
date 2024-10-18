@@ -60,6 +60,11 @@ class AgregarProducto(generic.FormView):
 
         
         return super().form_valid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['actual'] = 'agregar'
+        return context
 
 
 
@@ -85,6 +90,7 @@ class ListarProductos(generic.ListView):
         except Compra.DoesNotExist: #Si no existe la compra del usuario, se guarda None en el contexto.
             context['compra'] = None
             context['detalles'] = None
+        context['actual'] = 'lista'
         return context
 
 
@@ -92,6 +98,17 @@ class ListarProductos(generic.ListView):
 def buscar_producto(request):
     query = request.GET.get('q')
     productos = Producto.objects.filter(nombre__icontains=query)
-    return render(request, 'resultados.html', {'productos': productos, 'query': query})
+    context = {
+        'productos': productos,
+        'query': query,
+    }
+    try:#Pruebo a obtener la compra del usuario
+        context['compra'] = Compra.objects.get(usuario=request.user, estado=True) #Se obtiene la compra del usuario y se guarda en el contexto con el nombre de compra.
+        context['detalles'] = DetalleProducto.objects.filter(compra=context['compra']) #Se obtienen los detalles de la compra y se guardan en el contexto con el nombre de detalles.
+    except Compra.DoesNotExist: #Si no existe la compra del usuario, se guarda None en el contexto.
+        context['compra'] = None
+        context['detalles'] = None
+
+    return render(request, 'resultados.html', context)
 
 

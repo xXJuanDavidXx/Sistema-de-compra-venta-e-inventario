@@ -4,38 +4,52 @@
 {% load crispy_forms_tags %}
 
 
+<h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
+  <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+    Productos
+  </span>
+</h1>
+
+<style>
+  @keyframes rainbow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  .animate-rainbow {
+    animation: rainbow 5s ease infinite;
+  }
+  .animate-gradient {
+    animation: rainbow 3s ease infinite;
+    background-size: 200% 200%;
+  }
+</style>
+<hr>
+<!--Incluir el archivo de compra.html que es el carrito de compras arriba de la tabla de productos-->
+    {% include 'compra.html' %}
+
+<hr>
 <!--Mensaje de alerta en caso de que se haya agregado un producto al carrito o no se tengan existencias-->
 {% if messages %}
-<div class="messages">
+<div class="messages mt-4 mb-4">
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    <div class="bg-gradient-to-r from-{{ message.tags }}-400 to-{{ message.tags }}-600 text-white p-4 mb-2 rounded shadow-lg animate-pulse" role="alert">
+        <p class="font-bold text-lg">{{ message.tags|title }}</p>
+        <p class="mt-1">{{ message }}</p>
+    </div>
     {% endfor %}
 </div>
 {% endif %}
 
 
-<div>
-
-    <div class="flex justify-center mb-4">
-      <a href="{% url 'agregar' %}" class="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700">
-        Agregar
-      </a>
-    </div>
-</div>
-
-
-<!--Incluir el archivo de compra.html que es el carrito de compras arriba de la tabla de productos-->
-    {% include 'compra.html' %}
-
-
-
   <!-- Contenido principal (tabla de productos) -->
-  <div class="flex-1 px-6 py-6">
-    <h1 class="text-center text-2xl font-bold mb-4">Productos</h1>
 
       <!-- Barra de busqueda. -->
       <center>
-        <div class="search-bar mb-5">
+        <div class="search-bar my-8">
           <form action="{% url 'buscar_producto' %}" method="get">
             <input type="text" name="q" class="px-4 py-2 text-gray-700 border rounded" placeholder="Buscar">
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Buscar</button>
@@ -76,13 +90,12 @@
                          oninput="this.value = Math.min(this.value, {{ producto.stock }})"
                          onkeypress="return event.charCode >= 48 && event.charCode <= 57">
                   <button type="submit" 
-                          class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" 
+                          class="{% if producto.stock < 1 %}bg-gradient-to-r from-red-500 to-red-700{% else %}bg-gradient-to-r from-purple-400 via-pink-500 to-red-500{% endif %} text-white px-4 py-2 rounded hover:opacity-90 animate-gradient" 
                           {% if producto.stock < 1 %}disabled{% endif %}>
                       {% if producto.stock < 1 %}Agotado{% else %}Agregar{% endif %}
-                  </button> <!--Implementar cambiar de color el boton si hay existencias o no-->
-                </form>
-              </td>
-            </tr>
+                  </button>
+              </form>
+            </td>
             {% empty %}
             <tr>
               <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-700">No hay productos disponibles.</td>
@@ -94,4 +107,5 @@
     </div>
   </div>
 {% endblock %}
+
 

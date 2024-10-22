@@ -39,7 +39,7 @@ def agregar_a_compra(request, producto_id):
     # Actualizar el total de la compra
     compra.actualizar_total()
 
-    messages.success(request, 'Producto agregado al carrito correctamente')
+
     return redirect('lista')
 
 

@@ -4,11 +4,13 @@ from .forms import Agregar
 from django.urls import reverse_lazy
 from .models import Producto
 from compra.models import Compra, DetalleProducto
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 # Create your views here.
 
 
-class AgregarProducto(generic.FormView):
+class AgregarProducto(LoginRequiredMixin, generic.FormView):
     """
     FormView para administrar el formulrio para agregar un producto.
     
@@ -68,7 +70,7 @@ class AgregarProducto(generic.FormView):
 
 
 
-class ListarProductos(generic.ListView):
+class ListarProductos(LoginRequiredMixin, generic.ListView):
     """
     ListView para que se listen los productos desde la db en el template tranquilamente sin funciones raras.
     

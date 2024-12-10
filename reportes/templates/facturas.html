@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
+    <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+      Facturas
+    </span>
+</h1>
+
+<hr>
+
+<button class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded mb-4">
+    <a href="{% url 'agregar_factura' %}">Agregar Factura</a>
+</button>
+
+<hr>
+
+{% for factura in facturas %}
+<div class="flow-root rounded-lg border border-indigo-200 py-3 shadow-sm mb-6 bg-gradient-to-r from-indigo-50 to-purple-50">
+    <dl class="-my-3 divide-y divide-indigo-100 text-sm">
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Factura #</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{factura.id}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Fecha</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{factura.fecha}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Total</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{factura.total}}</dd>
+        </div>
+    </dl>
+</div>
+{% endfor %}
+
+<hr>
+
+{% endblock %}

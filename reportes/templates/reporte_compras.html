@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
+    <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+      Ventas
+    </span>
+</h1>
+
+<hr>
+
+{% for compra in compras %}
+<div class="flow-root rounded-lg border border-indigo-200 py-3 shadow-sm mb-6 bg-gradient-to-r from-indigo-50 to-purple-50">
+    <dl class="-my-3 divide-y divide-indigo-100 text-sm">
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Compra #</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{compra.id}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Fecha</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{compra.order_date}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Total</dt>
+            <dd class="text-indigo-700 sm:col-span-2">{{compra.total}}</dd>
+        </div>
+
+        <div class="grid grid-cols-1 gap-1 p-3 sm:grid-cols-3 sm:gap-4">
+            <dt class="font-medium text-indigo-900">Detalles de compra</dt>
+            <dd class="text-indigo-700 sm:col-span-2">
+                <table class="min-w-full divide-y divide-indigo-200">
+                    <thead>
+                        <tr>
+                            <th class="px-2 py-1 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">Producto</th>
+                            <th class="px-2 py-1 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">Cantidad</th>
+                            <th class="px-2 py-1 text-left text-xs font-medium text-indigo-500 uppercase tracking-wider">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-indigo-100">
+                        {% for detalle in compra.detalles.all %}
+                        <tr>
+                            <td class="px-2 py-1 whitespace-nowrap text-sm text-indigo-700">{{detalle.producto.nombre}}</td>
+                            <td class="px-2 py-1 whitespace-nowrap text-sm text-indigo-700">{{detalle.cantidad}}</td>
+                            <td class="px-2 py-1 whitespace-nowrap text-sm text-indigo-700">{{detalle.subtotal}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </dd>
+        </div>
+    </dl>
+</div>
+{% endfor %}
+
+<hr>
+
+{% endblock %}

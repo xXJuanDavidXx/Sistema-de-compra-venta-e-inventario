@@ -79,19 +79,23 @@ class ListarProductos(LoginRequiredMixin, generic.ListView):
     context_object_name = 'productos' #El nombre del contexto que se va a usar en el template
     template_name = 'listaProductos.html' #El template que se va a usar
 
-    def get_context_data(self, **kwargs): 
-        """
-        En este contexto se va a mostrar la compra y los detalles de la compra
-        este contenido se va a mostrar en el template listaProductos.html desde el tmplate incluido compra.html
-
-        """
-        context = super().get_context_data(**kwargs) #Se obtiene el contexto de la compra
-        try:#Pruebo a obtener la compra del usuario
-            context['compra'] = Compra.objects.get(usuario=self.request.user, estado=True) #Se obtiene la compra del usuario y se guarda en el contexto con el nombre de compra.
-            context['detalles'] = DetalleProducto.objects.filter(compra=context['compra']) #Se obtienen los detalles de la compra y se guardan en el contexto con el nombre de detalles.
-        except Compra.DoesNotExist: #Si no existe la compra del usuario, se guarda None en el contexto.
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        try:
+            compra = Compra.objects.get(usuario=self.request.user, estado=True)
+            context['compra'] = compra
+            context['detalles'] = DetalleProducto.objects.filter(compra=compra)
+            
+            # Calcular la cantidad en carrito para cada producto
+            productos_en_carrito = {detalle.producto_id: detalle.cantidad for detalle in context['detalles']}
+            for producto in context['productos']:
+                producto.cantidad_en_carrito = productos_en_carrito.get(producto.id, 0)
+        except Compra.DoesNotExist:
             context['compra'] = None
             context['detalles'] = None
+            for producto in context['productos']:
+                producto.cantidad_en_carrito = 0
+        
         context['actual'] = 'lista'
         return context
 

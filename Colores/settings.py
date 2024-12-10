@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ma3hxc^&0&i2+vyjj!)io*17-i=k(!u02v1t#fej(t=+jv8wbu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.1.42']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','192.168.0.112']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'app',
     'compra',
     'usuarios',
+    'reportes',
     ]
 
 
@@ -135,3 +136,15 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 LOGIN_REDIRECT_URL = 'lista'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'
+
+
+# EMAIL para recuperación de contraseñas
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'catalogolociones@gmail.com'
+EMAIL_HOST_PASSWORD = 'zueq vord wnkf iszp'
+
+DEFAULT_FROM_EMAIL = 'catalogolociones@gmail.com'

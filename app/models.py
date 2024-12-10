@@ -4,9 +4,9 @@ from django.db import models
 
 class Producto(models.Model):
     nombre = models.TextField(max_length = 200)
-    precio_base = models.DecimalField(max_digits=10, decimal_places=2)
-    porcentaje_ganancia = models.DecimalField(max_digits=5, decimal_places=2)
-    precio_final = models.DecimalField(max_digits=10, decimal_places=2, editable=False)#El precio final se calcula con el precio original y el porcentaje por lo tanto no es editable
+    precio_base = models.DecimalField(max_digits=10, decimal_places=0)
+    porcentaje_ganancia = models.DecimalField(max_digits=10, decimal_places=0)
+    precio_final = models.DecimalField(max_digits=10, decimal_places=0, editable=False)#El precio final se calcula con el precio original y el porcentaje por lo tanto no es editable
     stock = models.IntegerField()
 
     def save(self, *args, **kwargs): #Aqui vamos a calcular el precio original por el porcentaje

@@ -14,6 +14,7 @@
         </span>
 
         <ul class="mt-6 space-y-2">
+          {% if user.is_authenticated %}
           <li>
             <a href="{% url 'lista' %}" class="block rounded-lg {% if actual == 'lista' %}bg-red-700{% else %}text-red-400 hover:bg-red-700{% endif %} px-4 py-2 text-base font-extrabold">
               Inicio
@@ -27,28 +28,44 @@
           </li>
 
           <li>
-            <a href="#" class="block rounded-lg px-4 py-2 text-base font-extrabold text-orange-400 hover:bg-orange-700">
+            <a href="{% url 'reporte_compras' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-orange-400 hover:bg-orange-700">
               Ventas
             </a>
           </li>
 
           <li>
-            <a href="#" class="block rounded-lg px-4 py-2 text-base font-extrabold text-blue-400 hover:bg-blue-700">
+            <a href="{% url 'facturas' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-blue-400 hover:bg-blue-700">
               Facturas
             </a>
           </li>
 
           <li>
-            <a href="#" class="block rounded-lg px-4 py-2 text-base font-extrabold text-yellow-400 hover:bg-yellow-700">
+            <a href="{% url 'reporte_ganancias' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-yellow-400 hover:bg-yellow-700">
               Reportes
             </a>
           </li>
 
           <li>
-            <a href="#" class="block rounded-lg px-4 py-2 text-base font-extrabold text-purple-400 hover:bg-purple-700">
+            <a href="{% url 'logout' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-purple-400 hover:bg-purple-700">
              Salir
             </a>
           </li>
+          {% else %}
+
+            {% if title == 'registrarse' %}
+            <li>
+              <a href="{% url 'login' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-purple-400 hover:bg-purple-700">
+              Ingresar
+              </a>
+            </li>
+            {% elif title == 'Iniciar sesión' %}
+            <li>
+              <a href="{% url 'crear_usuario' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-purple-400 hover:bg-purple-700">
+              Registrarse
+              </a>
+            </li>
+            {% endif %}
+          {% endif %}
         </ul>
       </div>
     </nav>

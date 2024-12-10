@@ -82,6 +82,24 @@ def cerrar_compra(request):
         messages.error(request, 'No hay una compra activa')
         return redirect('lista')
 
+def actualizar_cantidad(request, producto_id):
+    if request.method == 'POST':
+        nueva_cantidad = int(request.POST.get('cantidad', 1))
+        producto = get_object_or_404(Producto, id=producto_id)
+        compra = Compra.objects.get(usuario=request.user, estado=True)
+        detalle_producto = DetalleProducto.objects.get(compra=compra, producto=producto)
+        
+        if nueva_cantidad <= 0:
+            detalle_producto.delete()
+        else:
+            detalle_producto.cantidad = nueva_cantidad
+            detalle_producto.save()
+        
+        compra.actualizar_total()
+        
+    return redirect('lista')
+
+
 
 
 

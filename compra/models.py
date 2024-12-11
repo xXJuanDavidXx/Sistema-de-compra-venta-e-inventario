@@ -1,6 +1,7 @@
 from django.db import models   
 from app.models import Producto #Se debe importar para los detalles de la orden.
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.     
 
@@ -18,9 +19,16 @@ class Compra(models.Model):
         self.total = sum(detalle.subtotal for detalle in self.detalles.all())#self.detallesdecompra_set.all() accede a todos los objetos relacionados con la compra a través de la relación ForeignKey de DetallesDeCompra. Luego, calcula el subtotal para cada detalle y lo suma.
         self.save()
 
-    def cerrar_compra(self): #este metodo finaliza la compra actual.
+    def cerrar_compra(self): # este metodo finaliza la compra actual.
         self.estado = False
         self.save()
+        
+        # Actualizar el reporte del día actual
+        #SI GUARDAMOS EL REPORTE EN ESTE MISMO METODO SE ASEGURA DE QUETODO FUCNIOEN BIEN
+        from reportes.models import Reporte  # Importación local para evitar circular import
+        fecha_actual = timezone.now().date()  # Obtener la fecha de hoy
+        reporte, created = Reporte.objects.get_or_create(fecha=fecha_actual)  # Obtener o crear el reporte de hoy
+        reporte.actualizar_ganancias()  # Actualizar las ganancias del día
 
 
 

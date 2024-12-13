@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from compra.models import Compra
-from .models import Reporte, Factura
+from .models import Reporte, Factura, Reporte_mensual, Reporte_anual
 from .forms import AgregarFactura
 
 # Create your views here.
@@ -22,17 +22,29 @@ def facturas(request):
 
 
 def reporte_compras(request):
-    compras = Compra.objects.all()
+    compras = Compra.objects.all().order_by("-id")
     return render(request, 'reporte_compras.html', {'compras': compras})
-
-
-def reporte_facturas(request):
-    facturas = Factura.objects.all()
-    return render(request, 'reporte_facturas.html', {'facturas': facturas})
-
 
 
 #Mostrar el reporte de ganancias por día
 def reporte_ganancias(request):
-    reportes = Reporte.objects.all()
-    return render(request, 'reporte_ganancias.html', {'reportes': reportes})
+    diarios = Reporte.objects.all()
+    mensual = Reporte_mensual.objects.all()
+    aunual = Reporte_anual.objects.all()
+    
+    return render(request, 'reporte_ganancias.html', {
+        'reportes': diarios,
+        'mensual': mensual,
+        'anual': aunual 
+          })
+
+
+
+
+
+
+
+
+
+
+

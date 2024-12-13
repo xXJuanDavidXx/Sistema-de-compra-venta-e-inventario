@@ -3,11 +3,62 @@
 {% block content %}
 <h2>Reporte Financiero</h2>
 
-<canvas id="reportChart" width="400" height="200"></canvas>
+<div class="container">
+    <div class="section">
+        <h3>Reporte Diario</h3>
+        <div class="chart-container">
+            <canvas id="reportChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Reporte Mensual</h3>
+        <div class="chart-container">
+            <canvas id="monthlyChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Reporte Anual</h3>
+        <div class="chart-container">
+            <canvas id="annualChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px;
+    }
+    .section {
+        width: 100%;
+        max-width: 800px;
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+    h3 {
+        text-align: center;
+        color: #333;
+    }
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 300px;
+    }
+</style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('reportChart').getContext('2d');
+    const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+    const annualCtx = document.getElementById('annualChart').getContext('2d');
 
     // Extraer los datos de Django para pasarlos a JavaScript
     const fechas = [{% for reporte in reportes %}'{{ reporte.fecha }}',{% endfor %}];
@@ -15,7 +66,19 @@
     const gastos = [{% for reporte in reportes %}{{ reporte.gastos }},{% endfor %}];
     const ganancias = [{% for reporte in reportes %}{{ reporte.ganancia }},{% endfor %}];
 
-    // Configuración del gráfico
+    // Datos para el gráfico mensual
+    const monthlyLabels = [{% for reporte in mensual %}'{{ reporte.mes|date:"F Y" }}',{% endfor %}];
+    const monthlyIngresos = [{% for reporte in mensual %}{{ reporte.ingresos }},{% endfor %}];
+    const monthlyGastos = [{% for reporte in mensual %}{{ reporte.gastos }},{% endfor %}];
+    const monthlyGanancias = [{% for reporte in mensual %}{{ reporte.ganancia }},{% endfor %}];
+
+    // Datos para el gráfico anual
+    const annualLabels = [{% for reporte in anual %}'{{ reporte.año }}',{% endfor %}];
+    const annualIngresos = [{% for reporte in anual %}{{ reporte.ingresos }},{% endfor %}];
+    const annualGastos = [{% for reporte in anual %}{{ reporte.gastos }},{% endfor %}];
+    const annualGanancias = [{% for reporte in anual %}{{ reporte.ganancia }},{% endfor %}];
+
+    // Configuración del gráfico diario
     new Chart(ctx, {
         type: 'bar',
         data: {
@@ -38,6 +101,84 @@
                 {
                     label: 'Ganancia',
                     data: ganancias,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Configuración del gráfico mensual
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: monthlyLabels,
+            datasets: [
+                {
+                    label: 'Ingresos Mensuales',
+                    data: monthlyIngresos,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Gastos Mensuales',
+                    data: monthlyGastos,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Ganancia Mensual',
+                    data: monthlyGanancias,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Configuración del gráfico anual
+    new Chart(annualCtx, {
+        type: 'bar',
+        data: {
+            labels: annualLabels,
+            datasets: [
+                {
+                    label: 'Ingresos Anuales',
+                    data: annualIngresos,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Gastos Anuales',
+                    data: annualGastos,
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Ganancia Anual',
+                    data: annualGanancias,
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1

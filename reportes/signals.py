@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from .models import Factura, Reporte, Reporte_anual, Reporte_mensual
+from .models import Factura, Reporte, ReporteAnual, ReporteMensual
 from compra.models import Compra
 from django.utils import timezone
 
@@ -19,9 +19,9 @@ def crear_reportes_mensuales_y_anuales(sender, instance, created, **kwargs):
     año = fecha_actual.year    # Obtener el año actual
 
     # Crear o actualizar el reporte mensual
-    reporte_mensual, _ = Reporte_mensual.objects.get_or_create(mes=timezone.datetime(año, mes, 1))  # Usar el primer día del mes
-    reporte_mensual.actualizar_ganancias()  # Actualizar ganancias independientemente de si fue creado o no
+    reporte_mensual, _ = ReporteMensual.objects.get_or_create(mes=timezone.datetime(año, mes, 1))  # Usar el primer día del mes
+    reporte_mensual.actualizar_datos_mensuales()  # Actualizar ganancias independientemente de si fue creado o no
 
     # Crear o actualizar el reporte anual
-    reporte_anual, _ = Reporte_anual.objects.get_or_create(año=año)  # Usar solo el año
-    reporte_anual.actualizar_ganancias()  # Actualizar ganancias independientemente de si fue creado o no
+    reporte_anual, _ = ReporteAnual.objects.get_or_create(anio=año)  # Usar solo el año
+    reporte_anual.actualizar_datos_anuales()  # Actualizar ganancias independientemente de si fue creado o no

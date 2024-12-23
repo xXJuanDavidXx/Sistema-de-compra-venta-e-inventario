@@ -1,7 +1,12 @@
 from django.shortcuts import render, redirect
 from compra.models import Compra
-from .models import Reporte, Factura, Reporte_mensual, Reporte_anual
+from .models import Reporte, Factura, ReporteMensual, ReporteAnual
 from .forms import AgregarFactura
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from django.urls import reverse_lazy
+from django.http import HttpResponse
+
 
 # Create your views here.
 
@@ -28,22 +33,42 @@ def reporte_compras(request):
 
 #Mostrar el reporte de ganancias por día
 def reporte_ganancias(request):
-    diarios = Reporte.objects.all()
-    mensual = Reporte_mensual.objects.all()
-    aunual = Reporte_anual.objects.all()
+    diarios = Reporte.objects.last()
     
     return render(request, 'reporte_ganancias.html', {
         'reportes': diarios,
-        'mensual': mensual,
-        'anual': aunual 
           })
 
 
 
+def reporte_diario(request):
+    return render(request, 'reportes/diario.html', {
+        'reportes': Reporte.objects.all()
+        })
+
+
+
+def reporte_mensual(request):
+    return render(request, 'reportes/mensual.html', {
+        'mensual': ReporteMensual.objects.all()
+        })
+
+
+
+def reporte_anual(request):
+    return render(request, 'reportes/anual.html', {
+        'anual': ReporteAnual.objects.all()
+        })
 
 
 
 
+def actualizar_mes(request):
+    hoy = date.today()
+    primer_dia_mes = hoy.replace(day=1)
+    reporte_mensual, creado = ReporteMensual.objects.get_or_create(mes=primer_dia_mes)
+    reporte_mensual.actualizar_datos_mensuales()
+    return redirect('reporte_diario')
 
 
 

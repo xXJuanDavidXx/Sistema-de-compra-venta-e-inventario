@@ -23,12 +23,12 @@ def agregar_factura(request):
 
 def facturas(request):
     facturas = Factura.objects.all()
-    return render(request, 'facturas.html', {'facturas': facturas})
+    return render(request, 'facturas.html', {'facturas': facturas, 'actual':'facturas'})
 
 
 def reporte_compras(request):
     compras = Compra.objects.all().order_by("-id")
-    return render(request, 'reporte_compras.html', {'compras': compras})
+    return render(request, 'reporte_compras.html', {'compras': compras, 'actual':'reporte_compras'})
 
 
 #Mostrar el reporte de ganancias por día
@@ -37,27 +37,31 @@ def reporte_ganancias(request):
     
     return render(request, 'reporte_ganancias.html', {
         'reportes': diarios,
+        'actual':'reporte_ganancias'
           })
 
 
 
 def reporte_diario(request):
     return render(request, 'reportes/diario.html', {
-        'reportes': Reporte.objects.all()
+        'reportes': Reporte.objects.all(),
+        'actual':'reporte_ganancias'
         })
 
 
 
 def reporte_mensual(request):
     return render(request, 'reportes/mensual.html', {
-        'mensual': ReporteMensual.objects.all()
+        'mensual': ReporteMensual.objects.all(),
+        'actual':'reporte_ganancias'
         })
 
 
 
 def reporte_anual(request):
     return render(request, 'reportes/anual.html', {
-        'anual': ReporteAnual.objects.all()
+        'anual': ReporteAnual.objects.all(),
+        'actual':'reporte_ganancias'
         })
 
 

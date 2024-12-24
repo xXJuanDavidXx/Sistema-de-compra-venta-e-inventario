@@ -28,25 +28,25 @@
           </li>
 
           <li>
-            <a href="{% url 'reporte_compras' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-orange-400 hover:bg-orange-700">
+            <a href="{% url 'reporte_compras' %}" class="block rounded-lg {% if actual == 'reporte_compras' %}bg-orange-700{% else %}text-orange-400 hover:bg-orange-700{% endif %} px-4 py-2 text-base font-extrabold">
               Ventas
             </a>
           </li>
 
           <li>
-            <a href="{% url 'facturas' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-blue-400 hover:bg-blue-700">
+            <a href="{% url 'facturas' %}" class="block rounded-lg {% if actual == 'facturas' %}bg-blue-700{% else %}text-blue-400 hover:bg-blue-700{% endif %} px-4 py-2 text-base font-extrabold">
               Facturas
             </a>
           </li>
 
           <li>
-            <a href="{% url 'reporte_ganancias' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-yellow-400 hover:bg-yellow-700">
+            <a href="{% url 'reporte_ganancias' %}" class="block rounded-lg {% if actual == 'reporte_ganancias' %}bg-yellow-700{% else %}text-yellow-400 hover:bg-yellow-700{% endif %} px-4 py-2 text-base font-extrabold">
               Reportes
             </a>
           </li>
 
           <li>
-            <a href="{% url 'logout' %}" class="block rounded-lg px-4 py-2 text-base font-extrabold text-purple-400 hover:bg-purple-700">
+            <a href="{% url 'logout' %}" class="block rounded-lg {% if actual == 'logout' %}bg-purple-700{% else %}text-purple-400 hover:bg-purple-700{% endif %} px-4 py-2 text-base font-extrabold">
              Salir
             </a>
           </li>

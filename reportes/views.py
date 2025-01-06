@@ -41,26 +41,35 @@ def reporte_ganancias(request):
           })
 
 
-
+#Diarios
 def reporte_diario(request):
+    reportes = Reporte.objects.all().order_by("-id")
     return render(request, 'reportes/diario.html', {
-        'reportes': Reporte.objects.all(),
-        'actual':'reporte_ganancias'
-        })
+        'reportes': reportes,
+        'actual': 'reporte_ganancias'
+    })
 
 
+def buscar_diario(request):
+    query = request.GET.get('q')
+    reportes = Reporte.objects.filter(fecha__icontains=query)
+    return render(request, 'reportes/resultados/resultados_dias.html', {
+        'reportes': reportes,
+        'actual': 'reporte_ganancias'
+    })
 
+#Mensuales
 def reporte_mensual(request):
     return render(request, 'reportes/mensual.html', {
-        'mensual': ReporteMensual.objects.all(),
+        'mensual': ReporteMensual.objects.all().order_by("-id"),
         'actual':'reporte_ganancias'
         })
 
 
-
+#Anuales
 def reporte_anual(request):
     return render(request, 'reportes/anual.html', {
-        'anual': ReporteAnual.objects.all(),
+        'anual': ReporteAnual.objects.all().order_by("-id"),
         'actual':'reporte_ganancias'
         })
 

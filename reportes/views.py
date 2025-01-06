@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from compra.models import Compra
 from .models import Reporte, Factura, ReporteMensual, ReporteAnual
-from .forms import AgregarFactura
+from .forms import AgregarFactura, FiltroFechaForm, ReporteAnualFiltroForm
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from django.urls import reverse_lazy
 from django.http import HttpResponse
+
 
 
 # Create your views here.
@@ -43,36 +44,98 @@ def reporte_ganancias(request):
 
 #Diarios
 def reporte_diario(request):
+    form = FiltroFechaForm(request.GET or None)
     reportes = Reporte.objects.all().order_by("-id")
     return render(request, 'reportes/diario.html', {
+        'form': form,
         'reportes': reportes,
         'actual': 'reporte_ganancias'
     })
 
 
 def buscar_diario(request):
-    query = request.GET.get('q')
-    reportes = Reporte.objects.filter(fecha__icontains=query)
+    form = FiltroFechaForm(request.GET or None)
+    reportes = Reporte.objects.all().order_by("-fecha")
+    
+    if form.is_valid():
+        fecha_inicio = form.cleaned_data.get('fecha_inicio')
+        fecha_fin = form.cleaned_data.get('fecha_fin')
+
+        if fecha_inicio:
+            reportes = reportes.filter(fecha__gte=fecha_inicio)
+        if fecha_fin:
+            reportes = reportes.filter(fecha__lte=fecha_fin)
+
+
     return render(request, 'reportes/resultados/resultados_dias.html', {
+        'form': form,
         'reportes': reportes,
         'actual': 'reporte_ganancias'
-    })
+        })
+
+
+
+
 
 #Mensuales
 def reporte_mensual(request):
+    form = FiltroFechaForm(request.GET or None)
     return render(request, 'reportes/mensual.html', {
+        'form': form,
         'mensual': ReporteMensual.objects.all().order_by("-id"),
         'actual':'reporte_ganancias'
         })
 
+def buscar_mensual(request):
+    form = FiltroFechaForm(request.GET or None)
+    reportes = ReporteMensual.objects.all().order_by("-mes")
+    
+    if form.is_valid():
+        fecha_inicio = form.cleaned_data.get('fecha_inicio')
+        fecha_fin = form.cleaned_data.get('fecha_fin')
+
+        if fecha_inicio:
+            reportes = reportes.filter(mes__gte=fecha_inicio)
+        if fecha_fin:
+            reportes = reportes.filter(mes__lte=fecha_fin)
+
+
+    return render(request, 'reportes/resultados/resultados_meses.html', {
+        'form': form,
+        'mensual': reportes,
+        'actual': 'reporte_ganancias'
+        })
+
+
 
 #Anuales
 def reporte_anual(request):
+    form = ReporteAnualFiltroForm(request.GET or None)
     return render(request, 'reportes/anual.html', {
+        'form':form,
         'anual': ReporteAnual.objects.all().order_by("-id"),
         'actual':'reporte_ganancias'
         })
 
+
+def buscar_anual(request):
+    form = ReporteAnualFiltroForm(request.GET or None)
+    reportes = ReporteAnual.objects.all()
+
+    if form.is_valid():
+        anio_inicio = form.cleaned_data.get('anio_inicio')
+        anio_fin = form.cleaned_data.get('anio_fin')
+
+        if anio_inicio:
+            reportes = reportes.filter(anio__gte=anio_inicio)  # >= año inicio
+        if anio_fin:
+            reportes = reportes.filter(anio__lte=anio_fin)    # <= año fin
+
+    return render(request, 'reportes/resultados/resultados_años.html', {
+        'form': form,
+        'anual': reportes,
+        'actual': 'reporte_ganancias'
+    })
 
 
 

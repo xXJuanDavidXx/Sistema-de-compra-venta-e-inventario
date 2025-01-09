@@ -17,6 +17,5 @@ RUN npm install -g npx
 
 COPY ./ ./
 
-run python manage.py makemigrations
 
 

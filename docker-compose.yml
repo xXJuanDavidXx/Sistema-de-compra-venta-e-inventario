@@ -5,6 +5,7 @@ services:
     command: python manage.py tailwind start
     volumes:
       - .:/app
+    restart: always
 
   web:
     build: .
@@ -13,4 +14,4 @@ services:
       - .:/app
     ports:
       - "8000:8000"
-
+    restart: always

@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django import forms
 
 
 
@@ -19,6 +21,10 @@ class CrearUsuario(FormView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'registrarse'
         return context
+
+    def form_valid(self, form):
+        user = form.save()
+        return super().form_valid(form)
 
 
 class LoginUsuario(LoginView):

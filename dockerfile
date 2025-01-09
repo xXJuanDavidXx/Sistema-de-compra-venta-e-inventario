@@ -17,6 +17,5 @@ RUN npm install -g npx
 
 COPY ./ ./
 
-RUN chmod +x /app/entrypoint.sh
 
 

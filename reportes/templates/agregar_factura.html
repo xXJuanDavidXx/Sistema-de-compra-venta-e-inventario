@@ -13,9 +13,11 @@
     <form method="post" class="space-y-4">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 hover:from-purple-500 hover:via-pink-600 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-colors duration-300">
-            Guardar
-        </button>
+        <button type="submit" class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+            <span class="block rounded-full bg-white px-8 py-3 text-sm text-black font-medium group-hover:bg-transparent">
+              Agregar
+            </span>
+          </button>
     </form>
 </div>
 {% endblock %}

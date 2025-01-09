@@ -26,15 +26,19 @@
   <hr>
   
   <div class="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-    <form method="post" class="space-y-4">
+    <form method="post" class="space-y-4 text-center">
       {% csrf_token %}
       
       {{ form|crispy }}
-      <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-        Agregar
+      <button type="submit" class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+        <span class="block rounded-full bg-white px-8 py-3 text-sm text-black font-medium group-hover:bg-transparent">
+          <strong>Ingresar</strong>
+        </span>
       </button>
     </form>
-    <a href="{% url 'password_reset' %}" class="text-blue-500">¿Olvidaste tu contraseña?</a>
+    <div class="text-center">
+      <a href="{% url 'password_reset' %}" class="text-blue-500">¿Olvidaste tu contraseña?</a>
+    </div>
   </div>
 
 {% endblock %}

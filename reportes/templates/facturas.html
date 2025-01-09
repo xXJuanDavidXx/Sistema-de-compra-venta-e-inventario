@@ -9,10 +9,15 @@
 
 <hr>
 
-<button class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded mb-4">
-    <a href="{% url 'agregar_factura' %}">Agregar Factura</a>
+<br>
+<button type="submit" class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+    <span class="block rounded-full bg-white px-8 py-3 text-sm text-black font-medium group-hover:bg-transparent">
+        <a href="{% url 'agregar_factura' %}">Agregar Factura</a>
+    </span>
 </button>
+<br>
 
+<br>
 <hr>
 
 {% for factura in facturas %}

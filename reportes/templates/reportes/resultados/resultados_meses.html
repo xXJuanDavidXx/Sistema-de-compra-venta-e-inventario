@@ -31,8 +31,12 @@
             <div>
               <form action="{% url 'buscar_mensual' %}" method="get">
 		      {{ form|crispy }}
-	      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Buscar</button>
-              </form>
+              <button type="submit" class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75">
+                <span class="block rounded-full bg-white px-8 py-3 text-sm text-black font-medium group-hover:bg-transparent">
+                  Buscar
+                </span>
+              </button>
+            </form>
             </div>
         </center>
 

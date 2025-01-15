@@ -2,6 +2,26 @@
 
 {% block content %}
 
+<h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
+  <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+    Modificar Producto
+  </span>
+</h1>
+
+<style>
+  @keyframes rainbow {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  .animate-rainbow {
+    animation: rainbow 5s ease infinite;
+  }
+</style>
+
     {% if productos %}
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white text-black border border-gray-200">

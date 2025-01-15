@@ -3,6 +3,8 @@
 {% block content %}
 {% load crispy_forms_tags %}
 
+
+
 <h1 class="text-center text-2xl font-bold mb-4 animate-rainbow">
   <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
     Agregar Producto
@@ -35,6 +37,14 @@
       </span>
     </button>
   </form>
+
+
+  <br>
+
+<a class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="{% url 'modificar_producto' %}" >
+  <span class="block rounded-full bg-white px-8 py-3 text-black font-medium group-hover:bg-transparent" >Modificar un Producto 
+  </span> 
+</a>
 </div>
 {% endblock %}
 

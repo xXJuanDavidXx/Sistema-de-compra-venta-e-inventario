@@ -1,15 +1,16 @@
 from django.views import generic
-from django.shortcuts import render
-from .forms import Agregar
+from django.shortcuts import render, redirect
+from .forms import Agregar, Productoform
 from django.urls import reverse_lazy
 from .models import Producto
 from compra.models import Compra, DetalleProducto
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-# Create your views here.
 
 
+
+##Agregar Productos
 class AgregarProducto(LoginRequiredMixin, generic.FormView):
     """
     FormView para administrar el formulrio para agregar un producto.
@@ -69,7 +70,7 @@ class AgregarProducto(LoginRequiredMixin, generic.FormView):
         return context
 
 
-
+##Listar los porductos y obtener la compra activa del usuario
 class ListarProductos(LoginRequiredMixin, generic.ListView):
     """
     ListView para que se listen los productos desde la db en el template tranquilamente sin funciones raras.
@@ -99,8 +100,7 @@ class ListarProductos(LoginRequiredMixin, generic.ListView):
         context['actual'] = 'lista'
         return context
 
-
-
+##Buscar productos
 def buscar_producto(request):
     query = request.GET.get('q')
     productos = Producto.objects.filter(nombre__icontains=query)
@@ -116,5 +116,32 @@ def buscar_producto(request):
         context['detalles'] = None
 
     return render(request, 'resultados.html', context)
+
+
+##Lista para modificar productos
+class Modificar_producto(LoginRequiredMixin, generic.ListView):
+    model = Producto 
+    context_object_name = 'productos'
+    template_name = 'modificar_producto.html'
+    
+## Funcion para modificar productos
+def modificar_producto(request, pk):
+    producto = Producto.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = Productoform(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('modificar_producto')
+
+    else:
+        form = Productoform(instance=producto)
+
+    return render(request, 'producto_modificar.html', {'form': form, 'producto': producto})
+
+
+
+
+
+
 
 

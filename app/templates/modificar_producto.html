@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if productos %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white text-black border border-gray-200">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b text-center">ID</th>
+                        <th class="py-2 px-4 border-b text-center">Nombre</th>
+                        <th class="py-2 px-4 border-b text-center">Precio Final</th>
+                        <th class="py-2 px-4 border-b text-center">Stock</th>
+                        <th class="py-2 px-4 border-b text-center">Modificar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                        <tr class="hover:bg-gray-100">
+                            <td class="py-2 px-4 border-b text-center">{{ producto.id }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ producto.nombre }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ producto.precio_final }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ producto.stock }}</td>
+                            <td class="py-2 px-4 border-b text-center">
+                                <a class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="{% url 'producto_a_modificar' producto.id %}" >
+                                    <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent"> Modificar 
+                                    </span> 
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No hay productos</p>
+    {% endif %}
+
+{% endblock %}
